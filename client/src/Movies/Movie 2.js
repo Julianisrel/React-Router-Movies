@@ -1,22 +1,26 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { useParams } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
-const Movie = props => {
-  const [movie, setMovie] = useState(null);
-  let { id } = useParams();
-
+const Movie = (props) => {
+  const [movie, setMovie] = useState();
+ 
   useEffect(() => {
-    axios
-      .get(`http://localhost:5000/api/movies/${id}`)
-      .then(response => {
-        setMovie(response.data);
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  }, [id]);
+    const id = props.match.params.id;
 
+    // change ^^^ that line and grab the id from the URL
+    // You will NEED to add a dependency array to this effect hook
+
+       axios
+        .get(`http://localhost:5000/api/movies/${id}`)
+        .then(response => {
+          setMovie(response.data);
+        })
+        .catch(error => {
+          console.error(error);
+        });
+
+  },[props.match.params.id]);
+  
   // Uncomment this only when you have moved on to the stretch goals
   // const saveMovie = () => {
   //   const addToSavedList = props.addToSavedList;
@@ -24,22 +28,21 @@ const Movie = props => {
   // }
 
   if (!movie) {
-    return <div></div>;
+    return <div>Loading movie information...</div>;
   }
 
   const { title, director, metascore, stars } = movie;
   return (
     <div className="save-wrapper">
       <div className="movie-card">
-        <h1 className="filmTitle">{title}</h1>
-        
+        <h2>{title}</h2>
         <div className="movie-director">
           Director: <em>{director}</em>
         </div>
         <div className="movie-metascore">
           Metascore: <strong>{metascore}</strong>
         </div>
-        <h2>Actors</h2>
+        <h3>Actors</h3>
 
         {stars.map(star => (
           <div key={star} className="movie-star">
@@ -47,11 +50,9 @@ const Movie = props => {
           </div>
         ))}
       </div>
-      <div onClick={() => props.add(movie)} className="save-button">
-        Save
-      </div>
+      <div className="save-button">Save</div>
     </div>
   );
-};
+}
 
-export default movie;
+export default Movie;
