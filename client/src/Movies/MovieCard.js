@@ -1,12 +1,12 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 
-function MovieCard({ movie }) {
-  const { title, director, metascore, stars, id } = movie;
+function MovieCard(props) {
+  const { title, director, metascore, stars, } = props;
   return (
     
       <div className="movie-card">
-       <Link to={`/movie/${id}`}> <h2>{title}</h2></Link>
+       <h2>{title}</h2>
         <div className="movie-director">
           Director: <em>{director}</em>
         </div>
